@@ -15,7 +15,15 @@ import {
 } from "@/lib/seo";
 import { getProduct, getProducts } from "@/lib/contentRepository";
 
-export const revalidate = 300;
+// Cached until an Admin save calls revalidateStorefront() (src/lib/storefrontRevalidation.ts).
+export const revalidate = false;
+
+// Prerender known products at build. Products added later render on first
+// visit and are then cached (dynamicParams defaults to true).
+export async function generateStaticParams() {
+  const products = await getProducts();
+  return products.map((product) => ({ id: product.id }));
+}
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
@@ -58,6 +66,17 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
   if (!product) {
     notFound();
   }
+
+  // Pick related items on the server so the page does not ship the whole
+  // catalog to the client (smaller HTML/RSC payload and ISR write size).
+  const relatedProducts = products
+    .filter((item) => item.id !== product.id)
+    .sort(
+      (a, b) =>
+        Number(b.category === product.category) -
+        Number(a.category === product.category),
+    )
+    .slice(0, 4);
 
   const detailImageUrls = [
     ...(product.detailImages || []).map((image) => image.url),
@@ -118,11 +137,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         <ProductTabs product={product} />
 
         {/* Related Products Carousel / Grid */}
-        <RelatedProducts
-          currentProductId={product.id}
-          category={product.category}
-          allProducts={products}
-        />
+        <RelatedProducts products={relatedProducts} />
       </div>
     </>
   );

@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     if (!parsed.success)
       return response({ message: "Category fields are invalid." }, 400);
     const item = await createCategory(parsed.data);
-    revalidateStorefront();
+    revalidateStorefront("categories");
     return response({ item }, 201);
   } catch (error) {
     if (error instanceof JsonBodyError)

@@ -5,24 +5,13 @@ import ProductCard from "./ProductCard";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface RelatedProductsProps {
-  currentProductId: string;
-  category: string;
-  allProducts: Product[];
+  /** Already filtered and sorted on the server (see app/product/[id]/page.tsx). */
+  products: Product[];
 }
 
-export default function RelatedProducts({
-  currentProductId,
-  category,
-  allProducts,
-}: RelatedProductsProps) {
+export default function RelatedProducts({ products }: RelatedProductsProps) {
   const { t } = useLanguage();
-  const related = allProducts
-    .filter((p) => p.id !== currentProductId)
-    .sort(
-      (a, b) =>
-        Number(b.category === category) - Number(a.category === category),
-    )
-    .slice(0, 4);
+  const related = products;
 
   if (related.length === 0) return null;
 

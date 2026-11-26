@@ -58,7 +58,7 @@ export async function PUT(request: NextRequest, { params }: RouteContext) {
     await deleteUploadedImages(
       managedKeys(previous).filter((key) => !retainedKeys.has(key)),
     );
-    revalidateStorefront();
+    revalidateStorefront("galleries");
     return response({ item });
   } catch (error) {
     return response(
@@ -80,6 +80,6 @@ export async function DELETE(request: NextRequest, { params }: RouteContext) {
   const deleted = await deleteGallery(id);
   if (!deleted) return response({ message: "Gallery not found." }, 404);
   await deleteUploadedImages(managedKeys(deleted));
-  revalidateStorefront();
+  revalidateStorefront("galleries");
   return response({ success: true });
 }

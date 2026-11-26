@@ -23,7 +23,15 @@ interface BlogPageProps {
   params: Promise<{ id: string }>;
 }
 
-export const revalidate = 300;
+// Cached until an Admin save calls revalidateStorefront() (src/lib/storefrontRevalidation.ts).
+export const revalidate = false;
+
+// Prerender known articles at build. New articles render on first visit and
+// are then cached (dynamicParams defaults to true).
+export async function generateStaticParams() {
+  const blogs = await getBlogs();
+  return blogs.map((blog) => ({ id: blog.slug }));
+}
 
 export async function generateMetadata({
   params,

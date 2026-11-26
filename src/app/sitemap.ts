@@ -2,7 +2,8 @@ import type { MetadataRoute } from "next";
 import { getBlogs, getGalleries, getProducts } from "@/lib/contentRepository";
 import { absoluteUrl } from "@/lib/seo";
 
-export const revalidate = 300;
+// Cached until an Admin save calls revalidateStorefront() (src/lib/storefrontRevalidation.ts).
+export const revalidate = false;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [blogs, galleries, products] = await Promise.all([

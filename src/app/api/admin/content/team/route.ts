@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
       return response({ message: "Team member fields are invalid." }, 400);
     }
     const item = await createTeamMember(parsed.data);
-    revalidateStorefront();
+    revalidateStorefront("team");
     return response({ item }, 201);
   } catch (error) {
     if (error instanceof JsonBodyError) {

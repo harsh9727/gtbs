@@ -1,7 +1,8 @@
 import AllProductsPageClient from "@/components/product/AllProductsPageClient";
 import { getCategories, getProducts } from "@/lib/contentRepository";
 
-export const revalidate = 300;
+// Cached until an Admin save calls revalidateStorefront() (src/lib/storefrontRevalidation.ts).
+export const revalidate = false;
 
 export default async function AllProductsPage({
   searchParams,

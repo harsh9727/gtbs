@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     if (!parsed.success)
       return response({ message: "Product fields are invalid." }, 400);
     const item = await createProduct(parsed.data);
-    revalidateStorefront();
+    revalidateStorefront("products");
     return response({ item }, 201);
   } catch (error) {
     if (error instanceof JsonBodyError)

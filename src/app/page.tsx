@@ -19,7 +19,8 @@ export const metadata = createPageMetadata({
   path: "/",
 });
 
-export const revalidate = 300;
+// Cached until an Admin save calls revalidateStorefront() (src/lib/storefrontRevalidation.ts).
+export const revalidate = false;
 
 export default async function Home() {
   const [products, testimonials, categories] = await Promise.all([
