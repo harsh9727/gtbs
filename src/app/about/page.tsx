@@ -7,7 +7,8 @@ import Faq from "@/components/common/Faq";
 import { aboutFaqs } from "@/data/faqs";
 import { getTeamMembers } from "@/lib/contentRepository";
 
-export const revalidate = 300;
+// Cached until an Admin save calls revalidateStorefront() (src/lib/storefrontRevalidation.ts).
+export const revalidate = false;
 
 export const metadata = createPageMetadata({
   title: "About Us",

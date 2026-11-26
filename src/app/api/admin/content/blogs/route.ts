@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
     return response({ message: "Blog fields are invalid." }, 400);
   try {
     const item = await createBlog(parsed.data);
-    revalidateStorefront();
+    revalidateStorefront("blogs");
     return response({ item }, 201);
   } catch (error) {
     return response(

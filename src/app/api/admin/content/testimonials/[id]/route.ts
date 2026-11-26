@@ -32,7 +32,7 @@ export async function PUT(request: NextRequest, { params }: RouteContext) {
     const { id } = await params;
     const item = await updateTestimonial(id, parsed.data);
     if (!item) return response({ message: "Testimonial not found." }, 404);
-    revalidateStorefront();
+    revalidateStorefront("testimonials");
     return response({ item });
   } catch (error) {
     if (error instanceof JsonBodyError) {
@@ -57,6 +57,6 @@ export async function DELETE(request: NextRequest, { params }: RouteContext) {
   const { id } = await params;
   const deleted = await deleteTestimonial(id);
   if (!deleted) return response({ message: "Testimonial not found." }, 404);
-  revalidateStorefront();
+  revalidateStorefront("testimonials");
   return response({ success: true });
 }

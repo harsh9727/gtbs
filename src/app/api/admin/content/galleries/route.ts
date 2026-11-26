@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     return response({ message: "Gallery fields are invalid." }, 400);
   try {
     const item = await createGallery(parsed.data);
-    revalidateStorefront();
+    revalidateStorefront("galleries");
     return response({ item }, 201);
   } catch (error) {
     return response(

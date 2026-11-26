@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
     webpackMemoryOptimizations: true,
   },
   images: {
+    // 31 days. Vercel Hobby budget: a longer cache means fewer repeat
+    // transformations and cache writes. UploadThing gives every upload a new
+    // URL, so a replaced image never waits for this TTL.
+    minimumCacheTTL: 2678400,
     remotePatterns: [
       {
         protocol: "https",

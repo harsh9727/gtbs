@@ -24,7 +24,15 @@ interface GalleryDetailPageProps {
   params: Promise<{ id: string }>;
 }
 
-export const revalidate = 300;
+// Cached until an Admin save calls revalidateStorefront() (src/lib/storefrontRevalidation.ts).
+export const revalidate = false;
+
+// Prerender known albums at build. New albums render on first visit and are
+// then cached (dynamicParams defaults to true).
+export async function generateStaticParams() {
+  const galleries = await getGalleries();
+  return galleries.map((gallery) => ({ id: gallery.slug }));
+}
 
 export async function generateMetadata({
   params,

@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
       return response({ message: "Testimonial fields are invalid." }, 400);
     }
     const item = await createTestimonial(parsed.data);
-    revalidateStorefront();
+    revalidateStorefront("testimonials");
     return response({ item }, 201);
   } catch (error) {
     if (error instanceof JsonBodyError) {

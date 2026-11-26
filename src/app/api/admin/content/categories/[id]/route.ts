@@ -32,7 +32,7 @@ export async function PUT(request: NextRequest, { params }: RouteContext) {
     const { id } = await params;
     const item = await updateCategory(id, parsed.data);
     if (!item) return response({ message: "Category not found." }, 404);
-    revalidateStorefront();
+    revalidateStorefront("categories");
     return response({ item });
   } catch (error) {
     if (error instanceof JsonBodyError)
@@ -56,7 +56,7 @@ export async function DELETE(request: NextRequest, { params }: RouteContext) {
     const { id } = await params;
     const deleted = await deleteCategory(id);
     if (!deleted) return response({ message: "Category not found." }, 404);
-    revalidateStorefront();
+    revalidateStorefront("categories");
     return response({ success: true });
   } catch (error) {
     return response(
